@@ -19,15 +19,20 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
- * Created by sanehyadav1 on 7/4/16.
+ * AsynTask subclass for accessing Google Books API, passes the returned JSON object back to BooksListActivity class.
  */
 public class GoogleBooksApiRequest extends AsyncTask<String,Object,JSONObject> {
     private ConnectivityManager mConnectivityManager;
     private Context mContext;
-
+    //interface to pass the output data back to BookListActivity
+    public interface AsyncResponse{
+        void processFinish(JSONObject output);
+    }
+    public AsyncResponse delegate = null;
     public GoogleBooksApiRequest(Context context){
         this.mContext = context;
     }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -47,7 +52,7 @@ public class GoogleBooksApiRequest extends AsyncTask<String,Object,JSONObject> {
         }
         String finalsearchQuery = searchQuery[0].replace(" ","%20");
         String apiUrlString = "https://www.googleapis.com/books/v1/volumes?q=" + finalsearchQuery;
-        Log.i("search query",finalsearchQuery);
+        Log.i("search query", finalsearchQuery);
 
         try{
             HttpURLConnection connection = null;
@@ -60,10 +65,8 @@ public class GoogleBooksApiRequest extends AsyncTask<String,Object,JSONObject> {
                 connection.setConnectTimeout(5000); // 5 seconds
                 Log.i("Connection Status","Conncetionsuccess");
             } catch (MalformedURLException e) {
-                // Impossible: The only two URLs used in the app are taken from string resources.
                 e.printStackTrace();
             } catch (ProtocolException e) {
-                // Impossible: "GET" is a perfectly valid request method.
                 e.printStackTrace();
             }
             int responseCode = connection.getResponseCode();
@@ -115,7 +118,8 @@ public class GoogleBooksApiRequest extends AsyncTask<String,Object,JSONObject> {
         }
         else{
             Log.i("JSON CREATED","ALL IS WELL");
-            // All went well. Do something with your new JSONObject.
+
+            delegate.processFinish(responseJson); //passes the output data back to BookList Activity
         }
     }
 

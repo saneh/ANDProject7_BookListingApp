@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         Button searchButton = (Button)findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //on button click launch BooksListActivity
                 Intent intent = new Intent(MainActivity.this,BooksListActivity.class);
                 String query = ((EditText)findViewById(R.id.search_edit_text)).getText().toString();
                 intent.putExtra("SEARCH_QUERY",query);
