@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GetBookListing</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="search">SEARCH</string>
+    <string name="search_books">Search Books</string>
+    <string name="title_activity_books_list">BooksListActivity</string>
+</resources>
